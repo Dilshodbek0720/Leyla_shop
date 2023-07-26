@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:leyla_shop/ui/register/sign/sign_screen.dart';
-import 'package:leyla_shop/utils/images.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/icons.dart';
 
