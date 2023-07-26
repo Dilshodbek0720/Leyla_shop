@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "595807343516",
+    "project_id": "leyla-shop",
+    "storage_bucket": "leyla-shop.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595807343516:android:bc87a4238442519663ae59",
+        "android_client_info": {
+          "package_name": "uz.leyla.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595807343516-4l6scnfbqkpjanfuncppu8nbshkkj3vp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8OtH9Fg1fYa8A_jZ2-zPo8YzCMUudMx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595807343516-4l6scnfbqkpjanfuncppu8nbshkkj3vp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
