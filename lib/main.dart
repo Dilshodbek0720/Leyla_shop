@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leyla_shop/ui/register/login/login_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,11 +11,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Leyla shop!'),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: LoginScreen()
     );
   }
 }
