@@ -18,7 +18,7 @@ class TabBox extends StatefulWidget {
 }
 
 class _TabBoxState extends State<TabBox> {
-  int currentIndex = 2;
+  int currentIndex = 0;
   final screens = [
     HomeScreen(),
     SearchScreen(),
