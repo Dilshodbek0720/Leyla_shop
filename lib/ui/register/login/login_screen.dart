@@ -1,20 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:leyla_shop/provider/aoth_provider.dart';
 import 'package:leyla_shop/ui/register/sign/sign_screen.dart';
+import 'package:leyla_shop/ui/register/widget/global_text_field.dart';
+import 'package:provider/provider.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/icons.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController usercontroler = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Column(
+      children: [
+        Globaltextfield(fontSize: 30,
+            controller:context.read<Authprovider>().usercontroler ,
+            obscureText: true,
+            hintext: "Roboto",
+            textInputType: TextInputType.text,
+            textAlign: TextAlign.start,
+            textInputAction: TextInputAction.none),
+        Globaltextfield(fontSize: 30,
+            controller: context.read<Authprovider>().emailcontroler,
+            obscureText: true,
+            hintext: "Enter your email",
+            textInputType: TextInputType.text,
+            textAlign: TextAlign.start,
+            textInputAction: TextInputAction.none),
+        Globaltextfield(fontSize: 30,
+            controller: context.read<Authprovider>().paswordcontroler,
+            obscureText: true,
+            hintext: "Enter your password",
+            textInputType: TextInputType.text,
+            textAlign: TextAlign.start,
+            textInputAction: TextInputAction.none)
+      ],
+    );
+  }
+}
+/* Scaffold(
       backgroundColor: AppColors.C_F5F7F9.withOpacity(0.92),
       body: ListView(
         children: [
@@ -156,6 +188,4 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-    );
-  }
-}
+    );*/
