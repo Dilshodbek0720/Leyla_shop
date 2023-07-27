@@ -48,3 +48,9 @@ flutter:
         - asset: assets/fonts/Roboto-Thin.ttf
         - asset: assets/fonts/Roboto-ThinItalic.ttf
           style: italic
+    - family: Cinzel
+      fonts:
+        - asset: assets/fonts/CinzelDecorative-Black.ttf
+        - asset: assets/fonts/CinzelDecorative-Bold.ttf
+        - asset: assets/fonts/CinzelDecorative-Regular.ttf
+

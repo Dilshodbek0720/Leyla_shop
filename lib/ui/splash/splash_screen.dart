@@ -42,9 +42,10 @@ class _SplashScreenState extends State<SplashScreen> {
             "Leyla shop",
             textAlign: TextAlign.center,
             style: TextStyle(
+              fontFamily: "Cinzel",
               fontWeight: FontWeight.w600,
-              fontSize: 32,
-              color: AppColors.white,
+              fontSize: 50,
+              color: AppColors.C_01AA4F,
             ),
           ),
         ),
