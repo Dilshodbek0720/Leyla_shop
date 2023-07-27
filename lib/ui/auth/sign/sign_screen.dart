@@ -69,10 +69,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               }
             }, borderColor: AppColors.C_01AA4F, color: AppColors.C_01AA4F, textColor: AppColors.white, text: "Sign Up"),
           ),
+
           GlobalButton(onTap: (){
             context.read<AuthProvider>().loginButtonPressed();
             Navigator.pop(context);
-          }, borderColor: AppColors.C_999999.withOpacity(0.2), color: AppColors.C_F5F7F9.withOpacity(0.62), textColor: AppColors.white, text: "Login")
+          }, borderColor: AppColors.C_999999.withOpacity(0.2), color: AppColors.C_F5F7F9.withOpacity(0.62), textColor: AppColors.black.withOpacity(0.4), text: "Login")
         ],
       ),
     );

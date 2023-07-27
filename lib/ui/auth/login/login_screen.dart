@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.push(context, MaterialPageRoute(builder: (context){
               return const SignUpScreen();
             }));
-          }, borderColor: AppColors.C_999999.withOpacity(0.2), color: AppColors.C_F5F7F9.withOpacity(0.62), textColor: AppColors.white, text: "Sign Up")
+          }, borderColor: AppColors.C_999999.withOpacity(0.2), color: AppColors.C_F5F7F9.withOpacity(0.62), textColor: AppColors.black.withOpacity(0.4), text: "Sign Up")
         ],
       ),
     );
