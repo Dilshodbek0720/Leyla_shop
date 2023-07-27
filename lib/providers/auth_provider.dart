@@ -9,6 +9,7 @@ class AuthProvider with ChangeNotifier {
 
 
   bool isLoading = false;
+  bool isSign = false;
 
   loginButtonPressed() {
     passwordController.clear();
@@ -34,6 +35,7 @@ class AuthProvider with ChangeNotifier {
         email: email,
         password: password,
       );
+      isSign = true;
       isLoading = false;
       notifyListeners();
     } on FirebaseAuthException catch (e) {

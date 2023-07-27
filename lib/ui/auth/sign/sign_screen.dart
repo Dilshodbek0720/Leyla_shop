@@ -64,6 +64,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             padding: EdgeInsets.symmetric(vertical: 28),
             child: GlobalButton(onTap: ()async{
               await context.read<AuthProvider>().signUpUser(context);
+              if(context.read<AuthProvider>().isSign){
+                Navigator.pop(context);
+              }
             }, borderColor: AppColors.C_01AA4F, color: AppColors.C_01AA4F, textColor: AppColors.white, text: "Sign Up"),
           ),
           GlobalButton(onTap: (){
