@@ -18,6 +18,7 @@ class AuthProvider with ChangeNotifier {
 
   bool isLoading = false;
   bool isSign = false;
+  bool isGoogle = false;
 
   loginButtonPressed() {
     passwordController.clear();
@@ -42,6 +43,7 @@ class AuthProvider with ChangeNotifier {
       if (context.mounted) {
         isSign = true;
         showMessage(context, "User signed Up");
+        notifyListeners();
       }
     } else {
       if (context.mounted) {
@@ -93,6 +95,7 @@ class AuthProvider with ChangeNotifier {
 
     if (universalData.error.isEmpty) {
       if (context.mounted) {
+        isGoogle = true;
         showMessage(context, "User Signed Up with Google.");
       }
     } else {

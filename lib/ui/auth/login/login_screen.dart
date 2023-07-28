@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:leyla_shop/providers/auth_providers.dart';
 import 'package:leyla_shop/ui/auth/widgets/global_button.dart';
 import 'package:leyla_shop/ui/auth/widgets/global_text_field.dart';
 import 'package:provider/provider.dart';

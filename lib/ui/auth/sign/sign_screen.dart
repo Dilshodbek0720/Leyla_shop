@@ -63,6 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             padding: EdgeInsets.symmetric(vertical: 28),
             child: GlobalButton(onTap: ()async{
               await context.read<AuthProvider>().signUpUser(context);
+              print(context.read<AuthProvider>().isSign);
               if(context.read<AuthProvider>().isSign){
                 Navigator.pop(context);
               }
@@ -70,8 +71,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           SizedBox(height: 12,),
           TextButton(
-              onPressed: () {
-                context.read<AuthProvider>().signInWithGoogle(context);
+              onPressed: () async{
+                await context.read<AuthProvider>().signInWithGoogle(context);
+                if(context.read<AuthProvider>().isGoogle){
+                  Navigator.pop(context);
+                }
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

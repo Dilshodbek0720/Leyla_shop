@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:leyla_shop/data/firebase/auth_service.dart';
 import 'package:leyla_shop/providers/auth_provider.dart';
-import 'package:leyla_shop/providers/auth_providers.dart';
-import 'package:leyla_shop/ui/auth/login/login_screen.dart';
 import 'package:leyla_shop/ui/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
