@@ -8,7 +8,7 @@ import 'package:leyla_shop/ui/tab_box/widgets/setting/setting_screen.dart';
 import 'package:leyla_shop/utils/colors.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/auth_provider.dart';
+import '../../providers/auth_providers.dart';
 
 class TabBox extends StatefulWidget {
   const TabBox({super.key});

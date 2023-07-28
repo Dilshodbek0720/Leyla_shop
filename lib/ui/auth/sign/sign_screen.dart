@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth_provider.dart';
+import '../../../providers/auth_providers.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/icons.dart';
 import '../login/login_screen.dart';
@@ -55,8 +56,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),),
           ),
           SizedBox(height: 40,),
-          GlobalTextField(hintext: "Enter your userName", controller: context.read<AuthProvider>().userNameController,),
-          SizedBox(height: 20,),
           GlobalTextField(hintext: "Enter your email", controller: context.read<AuthProvider>().emailController,),
           SizedBox(height: 20,),
           GlobalTextField(hintext: "Enter your password", controller: context.read<AuthProvider>().passwordController,),
@@ -69,7 +68,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
               }
             }, borderColor: AppColors.C_01AA4F, color: AppColors.C_01AA4F, textColor: AppColors.white, text: "Sign Up"),
           ),
-
+          SizedBox(height: 12,),
+          TextButton(
+              onPressed: () {
+                context.read<AuthProvider>().signInWithGoogle(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Sign Up with Google", style: TextStyle(fontSize: 14),),
+                  const SizedBox(width: 12),
+                  SvgPicture.asset(AppIcons.googleIcon, height: 30, width: 30,)
+                ],
+              )),
+          SizedBox(height: 10,),
           GlobalButton(onTap: (){
             context.read<AuthProvider>().loginButtonPressed();
             Navigator.pop(context);

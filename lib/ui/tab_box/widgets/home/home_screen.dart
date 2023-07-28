@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:leyla_shop/providers/auth_provider.dart';
+import 'package:leyla_shop/providers/auth_providers.dart';
 import 'package:provider/provider.dart';
+
+import '../../../../providers/auth_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text("HomeScreen"),
         actions: [
           IconButton(onPressed: (){
-            context.read<AuthProvider>().logOut(context);
+            context.read<AuthProvider>().logOutUser(context);
           }, icon: Icon(Icons.delete))
         ],
       ),

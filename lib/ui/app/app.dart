@@ -4,6 +4,7 @@ import 'package:leyla_shop/ui/auth/login/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
+import '../../providers/auth_providers.dart';
 import '../tab_box/tab_box.dart';
 
 class App extends StatelessWidget {

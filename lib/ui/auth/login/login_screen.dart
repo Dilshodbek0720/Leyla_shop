@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:leyla_shop/providers/auth_provider.dart';
+import 'package:leyla_shop/providers/auth_providers.dart';
 import 'package:leyla_shop/ui/auth/widgets/global_button.dart';
 import 'package:leyla_shop/ui/auth/widgets/global_text_field.dart';
 import 'package:provider/provider.dart';
+import '../../../providers/auth_provider.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/icons.dart';
 import '../sign/sign_screen.dart';
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 28),
             child: GlobalButton(onTap: (){
-              context.read<AuthProvider>().logIn(context);
+              context.read<AuthProvider>().logInUser(context);
             }, borderColor: AppColors.C_01AA4F, color: AppColors.C_01AA4F, textColor: AppColors.white, text: "Login"),
           ),
           const SizedBox(height: 30,),
