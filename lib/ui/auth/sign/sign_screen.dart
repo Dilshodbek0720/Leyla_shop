@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/auth_provider.dart';
-import '../../../providers/auth_providers.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/icons.dart';
 import '../login/login_screen.dart';

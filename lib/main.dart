@@ -3,15 +3,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:leyla_shop/data/firebase/auth_service.dart';
 import 'package:leyla_shop/providers/auth_provider.dart';
+import 'package:leyla_shop/providers/category_provider.dart';
+import 'package:leyla_shop/providers/product_provider.dart';
+import 'package:leyla_shop/providers/profile_provider.dart';
+import 'package:leyla_shop/providers/tab_admin_provider.dart';
+import 'package:leyla_shop/providers/tab_user_provider.dart';
 import 'package:leyla_shop/ui/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async{
+import 'data/firebase/category_service.dart';
+import 'data/firebase/product_service.dart';
+import 'data/firebase/profile_service.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (context) => AuthProvider(firebaseServices: AuthService()),
+      ChangeNotifierProvider(
+        create: (context) => AuthProvider(firebaseServices: AuthService()),
+        lazy: true,
+      ),
+      ChangeNotifierProvider(
+        create: (context) => TabAdminProvider(),
+        lazy: true,
+      ),
+      ChangeNotifierProvider(
+        create: (context) => TabUserProvider(),
+        lazy: true,
+      ),
+      ChangeNotifierProvider(
+        create: (context) =>
+            CategoryProvider(categoryService: CategoryService()),
+        lazy: true,
+      ),
+      ChangeNotifierProvider(
+          create: (context) =>
+              ProductProvider(productService: ProductService())),
+      ChangeNotifierProvider(
+        create: (context) => ProfileProvider(profileService: ProfileService()),
         lazy: true,
       )
     ],
