@@ -1,177 +1,199 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../data/models/category_model/category_model.dart';
 import '../../../../providers/category_provider.dart';
+import '../../../../utils/colors.dart';
 import '../../../auth/widgets/add_global_button.dart';
 import '../../../auth/widgets/add_text_fields.dart';
-import '../widgets/utils.dart';
 
-class AddCategoryScreen extends StatefulWidget {
-  const AddCategoryScreen({super.key});
+class CategoryAddScreen extends StatefulWidget {
+  CategoryAddScreen({super.key, this.categoryModel});
+
+  CategoryModel? categoryModel;
 
   @override
-  State<AddCategoryScreen> createState() => _AddCategoryScreenState();
+  State<CategoryAddScreen> createState() => _CategoryAddScreenState();
 }
 
-class _AddCategoryScreenState extends State<AddCategoryScreen> {
-  String? _imageUrl;
+class _CategoryAddScreenState extends State<CategoryAddScreen> {
+  ImagePicker picker = ImagePicker();
 
-  File? image;
-
-
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+  @override
+  void initState() {
+    if (widget.categoryModel != null) {
+      context.read<CategoryProvider>().setInitialValues(widget.categoryModel!);
     }
-  }
-
-  Future pickCamera() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future<void> _uploadImage() async {
-    String? downloadUrl = await uploadImageToFirebase(image);
-    setState(() {
-      _imageUrl = downloadUrl;
-    });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Add Category ",
-          style: TextStyle(fontSize: 24.sp),
+    return WillPopScope(
+      onWillPop: () async {
+        Provider.of<CategoryProvider>(context, listen: false).clearTexts();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.categoryModel == null
+              ? "Category Add"
+              : "Category Update"),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Provider.of<CategoryProvider>(context, listen: false)
+                  .clearTexts();
+              Navigator.pop(context);
+            },
+          ),
         ),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(28.0),
-        child: Column(
+        body: Column(
           children: [
             Expanded(
-                child: ListView(
-                  children: [
-                    Text(
-                      "Category Name",
-                      style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    AddGlobalTextField(
-                      hintText: "Category Name",
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  AddGlobalTextField(
+                      hintText: "Name",
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
                       textAlign: TextAlign.start,
-                      controller: context.read<CategoryProvider>().categoryName,
-                      icon: Icon(Icons.drive_file_rename_outline),
+                      controller: context
+                          .read<CategoryProvider>()
+                          .categoryNameController),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    height: 200,
+                    child: AddGlobalTextField(
+                        maxLine: 100,
+                        hintText: "Description",
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        textAlign: TextAlign.start,
+                        controller: context
+                            .read<CategoryProvider>()
+                            .categoryDescController),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: TextButton(
+                      onPressed: () {
+                        showBottomSheetDialog();
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: Theme.of(context).indicatorColor),
+                      child: context
+                          .watch<CategoryProvider>()
+                          .categoryUrl
+                          .isEmpty
+                          ? const Text(
+                        "Image Not Selected",
+                        style: TextStyle(color: Colors.black),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                          : Image.network(
+                          context.watch<CategoryProvider>().categoryUrl),
                     ),
-                    SizedBox(
-                      height: 60.h,
-                    ),
-                    Text(
-                      "Description",
-                      style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                    AddGlobalTextField(
-                      hintText: "Description",
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
-                      textAlign: TextAlign.start,
-                      controller: context.read<CategoryProvider>().description,
-                      icon: Icon(Icons.description),
-                    ),
-                    SizedBox(
-                      height: 60.h,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          height: 60,
-                          width: 180,
-                          child: TextButton(
-                            onPressed: () async {
-                              await pickImage();
-                            },
-                            child: Text(
-                              "Image",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            style: TextButton.styleFrom(
-                                backgroundColor: Colors.blue),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 50.w,
-                        ),
-                        if (image != null)
-                          Image.file(
-                            File(
-                              image!.path,
-                            ),
-                            height: 100.h,
-                          ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 60.h,
-                    ),
-                    AddGlobalButton(
-                        title: "Save",
-                        onTap: ()async {
-                          await _uploadImage();
-                          context.read<CategoryProvider>().addCategory(
-                            context: context,
-                            categoryModel: CategoryModel(
-                              categoryId: "",
-                              categoryName: context
-                                  .read<CategoryProvider>()
-                                  .categoryName
-                                  .text,
-                              description: context
-                                  .read<CategoryProvider>()
-                                  .description
-                                  .text,
-                              imageUrl: _imageUrl!,
-                              createdAt: DateTime.now().toString(),
-                            ),
-                          );
-                          Navigator.pop(context);
-                        })
-                  ],
-                ))
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+            AddGlobalButton(
+                title: widget.categoryModel == null
+                    ? "Add category"
+                    : "Update Category",
+                onTap: () {
+                  if (widget.categoryModel == null) {
+                    context.read<CategoryProvider>().addCategory(
+                      context: context,
+                    );
+                  } else {
+                    context.read<CategoryProvider>().updateCategory(
+                        context: context,
+                        currentCategory: widget.categoryModel!);
+                  }
+                }),
           ],
         ),
       ),
     );
+  }
+
+  void showBottomSheetDialog() {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(24),
+          height: 200,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+          ),
+          child: Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  _getFromCamera();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Select from Camera"),
+              ),
+              ListTile(
+                onTap: () {
+                  _getFromGallery();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.photo),
+                title: const Text("Select from Gallery"),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _getFromCamera() async {
+    XFile? xFile = await picker.pickImage(
+      source: ImageSource.camera,
+      maxHeight: 512,
+      maxWidth: 512,
+    );
+
+    if (xFile != null) {
+      print("VBNKM<");
+      await Provider.of<CategoryProvider>(context,listen: false)
+          .uploadCategoryImage(context, xFile);
+
+    }
+  }
+
+  Future<void> _getFromGallery() async {
+    XFile? xFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 512,
+      maxWidth: 512,
+    );
+    if (xFile != null) {
+      await Provider.of<CategoryProvider>(context,listen: false)
+          .uploadCategoryImage(context, xFile);
+    }
   }
 }

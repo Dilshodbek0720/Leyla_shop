@@ -162,7 +162,6 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     textAlign: TextAlign.start,
                     controller:
                     context.read<ProfileProvider>().nameController,
-                    icon: Icon(Icons.drive_file_rename_outline_sharp),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -174,7 +173,6 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     textAlign: TextAlign.start,
                     controller:
                     context.read<ProfileProvider>().emailController,
-                    icon: Icon(Icons.email),
                   ),
                   SizedBox(
                     height: 10.h,
@@ -186,7 +184,6 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     textAlign: TextAlign.start,
                     controller:
                     context.read<ProfileProvider>().phoneController,
-                    icon: Icon(Icons.phone),
                   ),
                   SizedBox(
                     height: 10.h,

@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:leyla_shop/ui/tab_admin/product/update_product/update_product_screen.dart';
+import 'package:leyla_shop/ui/tab_admin/product/add_product/add_product_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../../data/models/product_model/product_model.dart';
 import '../../../providers/product_provider.dart';
-import 'add_product/add_product_screen.dart';
 
 class ProductAdminScreen extends StatefulWidget {
   const ProductAdminScreen({super.key});
@@ -20,20 +17,27 @@ class _ProductAdminScreenState extends State<ProductAdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Products"),
+        title: const Text("Products Admin"),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const AddProductScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ProductAddScreen();
+                  },
+                ),
+              );
             },
             icon: const Icon(Icons.add),
           )
         ],
       ),
       body: StreamBuilder<List<ProductModel>>(
-        stream: context.read<ProductProvider>().getProducts(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<ProductModel>> snapshot) {
+        stream: context.read<ProductProvider>().getProducts(""),
+        builder:
+            (BuildContext context, AsyncSnapshot<List<ProductModel>> snapshot) {
           if (snapshot.hasData) {
             return snapshot.data!.isNotEmpty
                 ? ListView(
@@ -42,67 +46,24 @@ class _ProductAdminScreenState extends State<ProductAdminScreen> {
                     (index) {
                   ProductModel productModel = snapshot.data![index];
                   return ListTile(
-                      onLongPress: () {
-
-                      },
-                      leading: Image.network(productModel.productImages[0]),
-                      title: Text(productModel.productName),
-                      subtitle: Text(productModel.description),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateProductScreen(productModel: productModel)));
-                              },
-                              icon: const Icon(Icons.edit),
-                            ),
-                            IconButton(onPressed: (){
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  content:const Padding(
-                                    padding:  EdgeInsets.only(top: 10),
-                                    child: Text(
-                                      "Delete Category",
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                      onPressed: () {
-                                        context.read<ProductProvider>().deleteProduct(
-                                          context: context,
-                                          productId: productModel.productId,
-                                        );
-                                        Navigator.of(context).pop();
-                                      },
-                                      isDefaultAction: true,
-                                      child: const Text("ok"),
-                                    ),
-                                    CupertinoDialogAction(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      isDefaultAction: true,
-                                      child: const Text("cancel"),
-                                    ),
-
-                                  ],
-                                ),
-                              );
-                            }, icon: const Icon(Icons.delete))
-                          ],
-                        ),
-                      )
+                    leading: Image.file(File(productModel.productImages[0])),
+                    onLongPress: () {
+                      context.read<ProductProvider>().deleteProduct(
+                        context: context,
+                        productId: productModel.productId,
+                      );
+                    },
+                    title: Text(productModel.productName),
+                    subtitle: Text(productModel.description),
+                    trailing: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.edit),
+                    ),
                   );
                 },
               ),
             )
-                : Center(child: Text("Empty!",style: TextStyle(fontSize: 50.sp,fontWeight: FontWeight.w700),));
+                : const Center(child: Text("Product Empty!"));
           }
           if (snapshot.hasError) {
             return Center(

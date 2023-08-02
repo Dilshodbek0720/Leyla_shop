@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:leyla_shop/ui/tab_user/products/product_deteil_screen.dart';
+import 'package:leyla_shop/ui/tab_user/products/widgets/category_item_view.dart';
+import 'package:leyla_shop/ui/tab_user/products/widgets/product_item_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../data/models/category_model/category_model.dart';
 import '../../../data/models/product_model/product_model.dart';
+import '../../../providers/category_provider.dart';
 import '../../../providers/product_provider.dart';
 
 class ProductsScreen extends StatefulWidget {
@@ -14,53 +16,104 @@ class ProductsScreen extends StatefulWidget {
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
+  String selectedCategoryId = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Products"),
+        title: const Text("Products Client"),
       ),
-      body: StreamBuilder<List<ProductModel>>(
-        stream: context.read<ProductProvider>().getProducts(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<ProductModel>> snapshot) {
-          if (snapshot.hasData) {
-            return snapshot.data!.isNotEmpty
-                ? ListView(
-              children: List.generate(
-                snapshot.data!.length,
-                    (index) {
-                  ProductModel productModel = snapshot.data![index];
-                  return Container(
-                    margin: EdgeInsets.all(20.h),
-                    padding: EdgeInsets.all(10.h),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Colors.black.withOpacity(0.5)
-                    ),
-                    child: ListTile(
-                      onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailScreen(productModel: productModel)));
+      body: Column(
+        children: [
+          StreamBuilder<List<CategoryModel>>(
+            stream: context.read<CategoryProvider>().getCategories(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<CategoryModel>> snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data!.isNotEmpty
+                    ? SizedBox(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      CategoryItemView(
+                        categoryModel: CategoryModel(
+                          categoryId: "",
+                          description: "",
+                          categoryName: "All",
+                          imageUrl: "",
+                          createdAt: "",
+                        ),
+                        onTap: () {
+                          setState(() {
+                            selectedCategoryId = "";
+                          });
+                        },
+                        selectedId: selectedCategoryId,
+                      ),
+                      ...List.generate(
+                        snapshot.data!.length,
+                            (index) {
+                          CategoryModel categoryModel =
+                          snapshot.data![index];
+                          return CategoryItemView(
+                            categoryModel: categoryModel,
+                            onTap: () {
+                              setState(() {
+                                selectedCategoryId =
+                                    categoryModel.categoryId;
+                              });
+                            },
+                            selectedId: selectedCategoryId,
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                )
+                    : const Center(child: Text("Empty!"));
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+          StreamBuilder<List<ProductModel>>(
+            stream: context
+                .read<ProductProvider>()
+                .getProducts(selectedCategoryId),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ProductModel>> snapshot) {
+              if (snapshot.hasData) {
+                return snapshot.data!.isNotEmpty
+                    ? Expanded(
+                  child: ListView(
+                    children: List.generate(
+                      snapshot.data!.length,
+                          (index) {
+                        ProductModel productModel = snapshot.data![index];
+                        return ProductItemView(
+                            productModel: productModel);
                       },
-                      leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(6),
-                          child: Image.network(productModel.productImages.first,height: 60)),
-                      title: Text(productModel.productName,style: TextStyle(color: Colors.white),),
-                      subtitle: Text(productModel.description,style: TextStyle(color: Colors.white),),
                     ),
-                  );
-                },
-              ),
-            )
-                : const Center(child: Text("Empty!",style: TextStyle(fontSize: 50,fontWeight: FontWeight.w700),));
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(snapshot.error.toString()),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+                  ),
+                )
+                    : const Center(child: Text("Product Empty!"));
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+        ],
       ),
     );
   }

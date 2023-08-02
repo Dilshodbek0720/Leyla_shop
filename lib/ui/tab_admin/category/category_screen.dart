@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:leyla_shop/ui/tab_admin/category/update/update_category_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/category_model/category_model.dart';
 import '../../../providers/category_provider.dart';
 import 'add_category/add_category_screen.dart';
-
 
 class CategoryAdminScreen extends StatefulWidget {
   const CategoryAdminScreen({super.key});
@@ -20,11 +17,18 @@ class _CategoryAdminScreenState extends State<CategoryAdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Categories"),
+        title: const Text("Categories Admin"),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const AddCategoryScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return CategoryAddScreen();
+                  },
+                ),
+              );
             },
             icon: const Icon(Icons.add),
           )
@@ -42,67 +46,39 @@ class _CategoryAdminScreenState extends State<CategoryAdminScreen> {
                     (index) {
                   CategoryModel categoryModel = snapshot.data![index];
                   return ListTile(
-                      onLongPress: () {
-
-                      },
-                      leading: Image.network(categoryModel.imageUrl),
-                      title: Text(categoryModel.categoryName),
-                      subtitle: Text(categoryModel.description),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>UpdateCategoryScreen(categoryModel: categoryModel)));
-                              },
-                              icon: const Icon(Icons.edit),
-                            ),
-                            IconButton(onPressed: (){
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  backgroundColor: Colors.white,
-                                  content:const Padding(
-                                    padding:  EdgeInsets.only(top: 10),
-                                    child: Text(
-                                      "Delete Category",
-                                      style:
-                                      TextStyle(fontWeight: FontWeight.w500),
-                                    ),
-                                  ),
-                                  actions: [
-                                    CupertinoDialogAction(
-                                      onPressed: () {
-                                        context.read<CategoryProvider>().deleteCategory(
-                                          context: context,
-                                          categoryId: categoryModel.categoryId,
-                                        );
-                                        Navigator.of(context).pop();
-                                      },
-                                      isDefaultAction: true,
-                                      child: const Text("ok"),
-                                    ),
-                                    CupertinoDialogAction(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      isDefaultAction: true,
-                                      child: const Text("cancel"),
-                                    ),
-
-                                  ],
-                                ),
+                    leading: Image.network(
+                      categoryModel.imageUrl,
+                      width: 50,
+                      height: 50,
+                    ),
+                    onLongPress: () {
+                      context.read<CategoryProvider>().deleteCategory(
+                        context: context,
+                        categoryId: categoryModel.categoryId,
+                      );
+                    },
+                    title: Text(categoryModel.categoryName),
+                    subtitle: Text(categoryModel.description),
+                    trailing: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return CategoryAddScreen(
+                                categoryModel: categoryModel,
                               );
-                            }, icon: const Icon(Icons.delete))
-                          ],
-                        ),
-                      )
+                            },
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
                   );
                 },
               ),
             )
-                : const Center(child: Text("Empty!",style: TextStyle(fontSize: 50,fontWeight: FontWeight.w700),));
+                : const Center(child: Text("Empty!"));
           }
           if (snapshot.hasError) {
             return Center(

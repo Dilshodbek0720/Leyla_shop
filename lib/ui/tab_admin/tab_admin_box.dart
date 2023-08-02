@@ -21,9 +21,9 @@ class _TabAdminBoxState extends State<TabAdminBox> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.category), label: "Categories"),
-          BottomNavigationBarItem(
               icon: Icon(Icons.shop_two), label: "Products"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category), label: "Categories"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         onTap: (onTab) {

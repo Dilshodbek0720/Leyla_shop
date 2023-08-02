@@ -39,7 +39,7 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider(
           create: (context) =>
-              ProductProvider(productService: ProductService())),
+              ProductProvider(productsService: ProductService())),
       ChangeNotifierProvider(
         create: (context) => ProfileProvider(profileService: ProfileService()),
         lazy: true,

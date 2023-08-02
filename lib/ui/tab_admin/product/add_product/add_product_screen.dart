@@ -1,257 +1,318 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../data/models/category_model/category_model.dart';
 import '../../../../data/models/product_model/product_model.dart';
+import '../../../../providers/category_provider.dart';
 import '../../../../providers/product_provider.dart';
+import '../../../../utils/colors.dart';
+import '../../../../utils/ui_utils/constants.dart';
 import '../../../auth/widgets/add_global_button.dart';
 import '../../../auth/widgets/add_text_fields.dart';
-import '../../category/widgets/utils.dart';
 
+class ProductAddScreen extends StatefulWidget {
+  ProductAddScreen({super.key, this.productModel});
 
-class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+  ProductModel? productModel;
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<ProductAddScreen> createState() => _ProductAddScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
-  String? _imageUrl;
+class _ProductAddScreenState extends State<ProductAddScreen> {
+  ImagePicker picker = ImagePicker();
+  String imagePath = defaultImageConstant;
+  String currency = "";
 
-  File? image;
+  List<String> currencies = ["UZS", "USD", "RUB"];
 
-
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future pickCamera() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
-  }
-
-  Future<void> _uploadImage() async {
-    String? downloadUrl = await uploadImageToFirebase(image);
-    setState(() {
-      _imageUrl = downloadUrl;
-    });
-  }
+  String selectedCurrency = "UZS";
+  String selectedCategoryId = "";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Add Product ",
-          style: TextStyle(fontSize: 24.sp),
+    return WillPopScope(
+      onWillPop: () async {
+        Provider.of<ProductProvider>(context, listen: false).clearTexts();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+              widget.productModel == null ? "Product Add" : "Product Update"),
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Provider.of<CategoryProvider>(context, listen: false)
+                  .clearTexts();
+              Navigator.pop(context);
+            },
+          ),
         ),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: [
-          SizedBox(height: 28.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28.w),
-            child: Text(
-              "Product Name",
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
-            ),
-          ),
-          SizedBox(
-            height: 5.h,
-          ),
-          AddGlobalTextField(
-            hintText: "Product Name",
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.next,
-            textAlign: TextAlign.start,
-            controller: context.read<ProductProvider>().productName,
-            icon: Icon(Icons.drive_file_rename_outline),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28.w),
-            child: Text(
-              "Description",
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          AddGlobalTextField(
-            hintText: "Description",
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            textAlign: TextAlign.start,
-            controller: context.read<ProductProvider>().description,
-            icon: Icon(Icons.description),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28.w),
-            child: Text(
-              "Price",
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          AddGlobalTextField(
-            hintText: "Price",
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            textAlign: TextAlign.start,
-            controller: context.read<ProductProvider>().price,
-            icon: Icon(Icons.price_check),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28.w),
-            child: Text(
-              "Count",
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          AddGlobalTextField(
-            hintText: "Count",
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            textAlign: TextAlign.start,
-            controller: context.read<ProductProvider>().count,
-            icon: Icon(Icons.price_check),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28.w),
-            child: Text(
-              "Currency",
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
-            ),
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          AddGlobalTextField(
-            hintText: "Currency",
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.done,
-            textAlign: TextAlign.start,
-            controller: context.read<ProductProvider>().currency,
-            icon: Icon(Icons.currency_exchange),
-          ),
-          SizedBox(
-            height: 30.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 28.w),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 50.h,
-                  width: 150.w,
-                  child: TextButton(
-                    onPressed: () async {
-                      await pickImage();
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  AddGlobalTextField(
+                      hintText: "Product Name",
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      textAlign: TextAlign.start,
+                      controller: context
+                          .read<ProductProvider>()
+                          .productNameController),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    height: 200,
+                    child: AddGlobalTextField(
+                        maxLine: 100,
+                        hintText: "Description",
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.next,
+                        textAlign: TextAlign.start,
+                        controller: context
+                            .read<ProductProvider>()
+                            .productDescController),
+                  ),
+                  const SizedBox(height: 24),
+                  AddGlobalTextField(
+                    hintText: "Product Count",
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    textAlign: TextAlign.start,
+                    controller:
+                    context.read<ProductProvider>().productCountController,
+                  ),
+                  const SizedBox(height: 24),
+                  AddGlobalTextField(
+                    hintText: "Product Price",
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    textAlign: TextAlign.start,
+                    controller:
+                    context.read<ProductProvider>().productPriceController,
+                  ),
+                  const SizedBox(height: 24),
+                  DropdownButton(
+                    // Initial Value
+                    value: selectedCurrency,
+
+                    // Down Arrow Icon
+                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                    // Array list of items
+                    items: currencies.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedCurrency = newValue!;
+                      });
                     },
-                    child: Text(
-                      "Image",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue),
                   ),
-                ),
-                SizedBox(
-                  width: 50.w,
-                ),
-                if (image != null)
-                  Image.file(
-                    File(
-                      image!.path,
-                    ),
-                    height: 100.h,
+                  const SizedBox(height: 24),
+                  StreamBuilder<List<CategoryModel>>(
+                    stream: context.read<CategoryProvider>().getCategories(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<CategoryModel>> snapshot) {
+                      if (snapshot.hasData) {
+                        return snapshot.data!.isNotEmpty
+                            ? SizedBox(
+                          height: 100,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: List.generate(
+                              snapshot.data!.length,
+                                  (index) {
+                                CategoryModel categoryModel =
+                                snapshot.data![index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedCategoryId =
+                                          categoryModel.categoryId;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(16),
+                                      color: selectedCategoryId ==
+                                          categoryModel.categoryId
+                                          ? Colors.green
+                                          : Colors.white,
+                                    ),
+                                    height: 100,
+                                    margin: const EdgeInsets.all(16),
+                                    padding: const EdgeInsets.all(16),
+                                    child: Center(
+                                      child: Text(
+                                        categoryModel.categoryName,
+                                        style: TextStyle(
+                                          color: selectedCategoryId ==
+                                              categoryModel.categoryId
+                                              ? Colors.white
+                                              : Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        )
+                            : const Center(child: Text("Empty!"));
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    },
                   ),
-              ],
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: TextButton(
+                      onPressed: () {
+                        showBottomSheetDialog();
+                      },
+                      style: TextButton.styleFrom(
+                          backgroundColor: Theme.of(context).indicatorColor),
+                      child: imagePath == defaultImageConstant
+                          ? Text(
+                        imagePath,
+                        style: const TextStyle(color: Colors.black),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                          : Image.file(File(imagePath)),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 40.h,
-          ),
-          AddGlobalButton(
-              title: "Save",
-              onTap: ()async {
-                await _uploadImage();
-                // ignore: use_build_context_synchronously
-                context.read<ProductProvider>().addProduct(
-                  context: context,
-                  productModel: ProductModel(
-                      productId: "",
-                      productName: context
-                          .read<ProductProvider>()
-                          .productName
-                          .text,
-                      description: context
-                          .read<ProductProvider>()
-                          .description
-                          .text,
-                      productImages: [_imageUrl!],
-                      createdAt: DateTime.now().toString(),
-                      count: int.parse(context.read<ProductProvider>().count.text),
-                      price: int.parse(context.read<ProductProvider>().price.text),
-                      categoryId: "",
-                      currency: context.read<ProductProvider>().currency.text
-                  ),
-                );
-                Navigator.pop(context);
-              }),
-          SizedBox(height: 30.h,)
-        ],
+            AddGlobalButton(
+                title: widget.productModel == null
+                    ? "Add product"
+                    : "Update product",
+                onTap: () {
+                  if (imagePath != defaultImageConstant &&
+                      selectedCategoryId.isNotEmpty) {
+                    context.read<ProductProvider>().addProduct(
+                      context: context,
+                      imageUrls: [imagePath],
+                      categoryId: selectedCategoryId,
+                      productCurrency: selectedCurrency,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(milliseconds: 500),
+                        backgroundColor: Colors.red,
+                        margin: EdgeInsets.symmetric(
+                          vertical: 100,
+                          horizontal: 20,
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          "Ma'lumotlar to'liq emas!!!",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                }),
+          ],
+        ),
       ),
     );
+  }
+
+  void showBottomSheetDialog() {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(24),
+          height: 200,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
+            ),
+          ),
+          child: Column(
+            children: [
+              ListTile(
+                onTap: () {
+                  _getFromCamera();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Select from Camera"),
+              ),
+              ListTile(
+                onTap: () {
+                  _getFromGallery();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.photo),
+                title: const Text("Select from Gallery"),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _getFromCamera() async {
+    XFile? xFile = await picker.pickImage(
+      source: ImageSource.camera,
+      maxHeight: 512,
+      maxWidth: 512,
+    );
+    if (xFile != null) {
+      setState(() {
+        imagePath = xFile.path;
+      });
+    }
+  }
+
+  Future<void> _getFromGallery() async {
+    XFile? xFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 512,
+      maxWidth: 512,
+    );
+    if (xFile != null) {
+      setState(() {
+        imagePath = xFile.path;
+      });
+    }
   }
 }

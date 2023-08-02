@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../utils/colors.dart';
 
 class AddGlobalTextField extends StatelessWidget {
@@ -10,7 +10,8 @@ class AddGlobalTextField extends StatelessWidget {
     required this.textInputAction,
     required this.textAlign,
     this.obscureText = false,
-    required this.controller, required this.icon,
+    this.maxLine = 1,
+    required this.controller,
   }) : super(key: key);
 
   final String hintText;
@@ -18,65 +19,62 @@ class AddGlobalTextField extends StatelessWidget {
   TextInputAction textInputAction;
   TextAlign textAlign;
   final bool obscureText;
-  final Icon icon;
   final TextEditingController controller;
+  final int maxLine;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 15.h),
-      child: TextField(
-        style: TextStyle(
-            fontSize: 20.sp,
+    return TextField(
+      maxLines: maxLine,
+      style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: AppColors.black,
+          fontFamily: "DMSans"),
+      textAlign: textAlign,
+      textInputAction: textInputAction,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      controller: controller,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: AppColors.white,
+        hintText: hintText,
+        hintStyle: TextStyle(
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             color: AppColors.black,
             fontFamily: "DMSans"),
-        textAlign: textAlign,
-        textInputAction: textInputAction,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        controller: controller,
-        decoration: InputDecoration(
-          prefixIcon: icon,
-          filled: true,
-          fillColor: AppColors.black.withOpacity(0.05),
-          hintText: hintText,
-          hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: AppColors.black.withOpacity(0.5),
-              fontFamily: "DMSans"),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(width: 1, color: AppColors.white),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(width: 1, color: AppColors.white),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1,
+            color: AppColors.white,
           ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              width: 1,
-              color: AppColors.white,
-            ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1,
+            color: AppColors.white,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              width: 1,
-              color: AppColors.black,
-            ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1,
+            color: AppColors.white,
           ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              width: 1,
-              color: AppColors.white,
-            ),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              width: 1,
-              color: AppColors.white,
-            ),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            width: 1,
+            color: AppColors.white,
           ),
         ),
       ),
