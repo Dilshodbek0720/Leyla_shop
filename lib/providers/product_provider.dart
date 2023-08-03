@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../data/firebase/product_service.dart';
 import '../data/models/category_model/category_model.dart';
 import '../data/models/product_model/product_model.dart';
 import '../data/models/universal_data.dart';
+import '../data/upload_service.dart';
 import '../utils/ui_utils/loading_dialog.dart';
 
 class ProductProvider with ChangeNotifier {
@@ -17,13 +19,12 @@ class ProductProvider with ChangeNotifier {
   TextEditingController productDescController = TextEditingController();
   TextEditingController productCountController = TextEditingController();
 
-
+  List<String> uploadedImagesUrls = [];
 
   Future<void> addProduct({
     required BuildContext context,
     required String categoryId,
     required String productCurrency,
-    required List<String> imageUrls,
   }) async {
     String name = productNameController.text;
     String productDesc = productDescController.text;
@@ -34,10 +35,11 @@ class ProductProvider with ChangeNotifier {
         productDesc.isNotEmpty &&
         priceText.isNotEmpty &&
         countText.isNotEmpty) {
+
       ProductModel productModel = ProductModel(
         count: int.parse(countText),
         price: int.parse(priceText),
-        productImages: imageUrls,
+        productImages: uploadedImagesUrls,
         categoryId: categoryId,
         productId: "",
         productName: name,
@@ -55,7 +57,7 @@ class ProductProvider with ChangeNotifier {
       if (universalData.error.isEmpty) {
         if (context.mounted) {
           showMessage(context, universalData.data as String);
-          clearTexts();
+          clearParameters();
           Navigator.pop(context);
         }
       } else {
@@ -116,41 +118,34 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> updateProduct({
     required BuildContext context,
-    required String categoryId,
-    required String productCurrency,
-    required List<String> imageUrls,
+    required String imagePath,
+    required ProductModel productModel,
   }) async {
     String name = productNameController.text;
-    String productDesc = productDescController.text;
-    String priceText = productPriceController.text;
-    String countText = productCountController.text;
+    String categoryDesc = productPriceController.text;
 
-    if (name.isNotEmpty &&
-        productDesc.isNotEmpty &&
-        priceText.isNotEmpty &&
-        countText.isNotEmpty) {
-      ProductModel productModel = ProductModel(
-        count: int.parse(countText),
-        price: int.parse(priceText),
-        productImages: imageUrls,
-        categoryId: categoryId,
-        productId: "",
-        productName: name,
-        description: productDesc,
-        createdAt: DateTime.now().toString(),
-        currency: productCurrency,
-      );
-
+    if (name.isNotEmpty && categoryDesc.isNotEmpty) {
       showLoading(context: context);
-      UniversalData universalData =
-      await productsService.updateProduct(productModel: productModel);
+      UniversalData universalData = await productsService.updateProduct(
+        productModel: ProductModel(
+          count: 1,
+          price: 23,
+          productImages: [],
+          categoryId: productModel.categoryId,
+          createdAt: productModel.createdAt,
+          productName: productNameController.text,
+          description: productPriceController.text,
+          productId: productModel.productId,
+          currency: "SO'M",
+        ),
+      );
       if (context.mounted) {
         hideLoading(dialogContext: context);
       }
       if (universalData.error.isEmpty) {
         if (context.mounted) {
           showMessage(context, universalData.data as String);
-          clearTexts();
+          clearParameters();
           Navigator.pop(context);
         }
       } else {
@@ -158,34 +153,39 @@ class ProductProvider with ChangeNotifier {
           showMessage(context, universalData.error);
         }
       }
-    } else {
-      showMessage(context, "Maydonlar to'liq emas!!!");
     }
   }
 
+  Future<void> uploadProductImages({
+    required BuildContext context,
+    required List<XFile> images,
+  }) async {
+    showLoading(context: context);
 
+    for (var element in images) {
+      UniversalData data = await FileUploader.imageUploader(element);
+      if (data.error.isEmpty) {
+        uploadedImagesUrls.add(data.data as String);
+      }
+    }
 
+    notifyListeners();
 
+    if (context.mounted) {
+      hideLoading(dialogContext: context);
+    }
+  }
 
-
-
-
-
-
-  setInitialValues(ProductModel productModel) {
+  setInitialValues(CategoryModel categoryModel) {
     productNameController =
-        TextEditingController(text: productModel.productName);
+        TextEditingController(text: categoryModel.categoryName);
     productPriceController =
-        TextEditingController(text: productModel.price.toString());
-    productDescController =
-        TextEditingController(text: productModel.description);
-    productCountController =
-        TextEditingController(text: productModel.count.toString());
-
+        TextEditingController(text: categoryModel.description);
     notifyListeners();
   }
 
-  clearTexts() {
+  clearParameters() {
+    uploadedImagesUrls = [];
     productPriceController.clear();
     productNameController.clear();
     productDescController.clear();

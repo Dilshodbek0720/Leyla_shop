@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:leyla_shop/utils/colors.dart';
 
 import '../../../../data/models/category_model/category_model.dart';
 
@@ -16,14 +17,19 @@ class CategoryItemView extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
+          boxShadow: [BoxShadow(
+            spreadRadius: 1,
+            blurRadius: 6,
+            color: AppColors.black.withOpacity(0.1)
+          )],
+          borderRadius: BorderRadius.circular(10),
           color: selectedId ==
               categoryModel.categoryId
               ? Colors.green
               : Colors.white,
         ),
         height: 50,
-        margin: const EdgeInsets.all(5),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: const EdgeInsets.all(10),
         child: Center(
           child: Text(

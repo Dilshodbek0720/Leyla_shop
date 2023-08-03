@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:leyla_shop/ui/tab_user/orders/orders_screen_user.dart';
 
 import '../ui/tab_user/categories/categories_screen.dart';
 import '../ui/tab_user/products/products_screen.dart';
@@ -17,6 +18,7 @@ class TabUserProvider with ChangeNotifier {
   void getWidgets(){
     screens.add(const ProductsScreen());
     screens.add(const CategoriesScreen());
+    screens.add(const OrdersScreen());
     screens.add(const ProfileUserScreen());
     widget = screens[0];
     notifyListeners();

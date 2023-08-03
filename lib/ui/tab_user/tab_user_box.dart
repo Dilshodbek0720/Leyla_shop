@@ -1,4 +1,6 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../providers/tab_user_provider.dart';
 
@@ -17,19 +19,20 @@ class _TabUserBoxState extends State<TabUserBox> {
     var provider = Provider.of<TabUserProvider>(context, listen: true);
     return Scaffold(
       body:provider.widget,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shop_two), label: "Products"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.category), label: "Categories"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: "Profile"),
+      bottomNavigationBar: CurvedNavigationBar(
+        color: Colors.greenAccent,
+        backgroundColor: Colors.white,
+        items: <Widget>[
+          Icon(Icons.home, size: 30, color: Colors.white,),
+          Icon(Icons.category, size: 30, color: Colors.white,),
+          Icon(Icons.shopping_cart_rounded, size: 30, color: Colors.white,),
+          Icon(Icons.person, size: 30, color: Colors.white,),
         ],
-        onTap: (onTab) {
-          provider.getScreen(onTab);
+        onTap: (index) {
+          provider.getScreen(index);
         },
-        currentIndex: provider.currentIndex,
+        buttonBackgroundColor: Colors.greenAccent,
+        height: 60.h,
       ),
     );
   }

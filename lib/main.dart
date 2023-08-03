@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:leyla_shop/data/firebase/auth_service.dart';
 import 'package:leyla_shop/providers/auth_provider.dart';
 import 'package:leyla_shop/providers/category_provider.dart';
+import 'package:leyla_shop/providers/order_provider.dart';
 import 'package:leyla_shop/providers/product_provider.dart';
 import 'package:leyla_shop/providers/profile_provider.dart';
 import 'package:leyla_shop/providers/tab_admin_provider.dart';
@@ -11,6 +12,7 @@ import 'package:leyla_shop/providers/tab_user_provider.dart';
 import 'package:leyla_shop/ui/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'data/firebase/category_service.dart';
+import 'data/firebase/orders_firebase.dart';
 import 'data/firebase/product_service.dart';
 import 'data/firebase/profile_service.dart';
 
@@ -43,7 +45,11 @@ Future<void> main() async {
       ChangeNotifierProvider(
         create: (context) => ProfileProvider(profileService: ProfileService()),
         lazy: true,
-      )
+      ),
+      ChangeNotifierProvider(
+        create: (context) => OrderProvider(orderService: OrderService()),
+        lazy: false,
+      ),
     ],
     child: MyApp(),
   ));
@@ -66,7 +72,6 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
         );
       },
-
       child: SplashScreen(),
     );
   }
