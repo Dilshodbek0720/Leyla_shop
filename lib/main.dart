@@ -10,7 +10,6 @@ import 'package:leyla_shop/providers/tab_admin_provider.dart';
 import 'package:leyla_shop/providers/tab_user_provider.dart';
 import 'package:leyla_shop/ui/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
-
 import 'data/firebase/category_service.dart';
 import 'data/firebase/product_service.dart';
 import 'data/firebase/profile_service.dart';
