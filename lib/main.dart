@@ -14,6 +14,7 @@ import 'data/firebase/category_service.dart';
 import 'data/firebase/product_service.dart';
 import 'data/firebase/profile_service.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -65,6 +66,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
         );
       },
+
       child: SplashScreen(),
     );
   }
