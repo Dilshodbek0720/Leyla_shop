@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/icons.dart';
-import '../login/login_screen.dart';
 import '../widgets/global_button.dart';
 import '../widgets/global_text_field.dart';
 
