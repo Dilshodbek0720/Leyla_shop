@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../data/models/order_model/order_model.dart';
 import '../../../../data/models/product_model/product_model.dart';
@@ -47,35 +49,68 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             child: ListView(
               physics: const ScrollPhysics(),
               children: [
-                Container(
-                  child: Hero(
-                    tag: widget.index,
+                SizedBox(height: 20.h,),
+                CarouselSlider(
+                  items: List.generate(widget.productModel.productImages.length, (index) => Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.r),
+                        boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              spreadRadius: 0,
+                            )
+                          ]
+                    ),
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(25.r),
-                      child: CachedNetworkImage(
-                        height: 350.h,
-                        width: 350.h,
-                        fit: BoxFit.cover,
-                        imageUrl: widget.productModel.productImages.first,
-                        placeholder: (context, url) =>
-                        const CupertinoActivityIndicator(),
-                        errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                      borderRadius: BorderRadius.circular(30.r),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.productModel.productImages[index],
+                            fit: BoxFit.cover,
+                          )
                       ),
                     ),
-                  ),
-                  margin: EdgeInsets.all(37.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.4),
-                        blurRadius: 6,
-                        spreadRadius: 1,
-                      )
-                    ]
-                  ),
-                ),
+                  )), options: CarouselOptions(
+                    autoPlay: true,
+                    height: 350.h,
+                    aspectRatio: 2.0,
+                    enlargeCenterPage: true
+                ),),
+                // Container(
+                //   child: Hero(
+                //     tag: widget.index,
+                //     child: ClipRRect(
+                //       borderRadius: BorderRadius.circular(25.r),
+                //       child: CachedNetworkImage(
+                //         height: 350.h,
+                //         width: 350.h,
+                //         fit: BoxFit.cover,
+                //         imageUrl: widget.productModel.productImages.first,
+                //         placeholder: (context, url) =>
+                //         const CupertinoActivityIndicator(),
+                //         errorWidget: (context, url, error) =>
+                //         const Icon(Icons.error),
+                //       ),
+                //     ),
+                //   ),
+                //   margin: EdgeInsets.all(37.w),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(25.r),
+                //     boxShadow: [
+                //       BoxShadow(
+                //         color: Colors.black.withOpacity(0.4),
+                //         blurRadius: 6,
+                //         spreadRadius: 1,
+                //       )
+                //     ]
+                //   ),
+                // ),
                 SizedBox(
                   height: 20.h,
                 ),

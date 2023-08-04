@@ -109,68 +109,66 @@ class _ProductsScreenState extends State<ProductsScreen> {
               if (snapshot.hasData) {
                 return snapshot.data!.isNotEmpty
                     ? Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(15.sp),
-                    child: StreamBuilder<List<ProductModel>>(
-                      stream: context
-                          .read<ProductProvider>()
-                          .getProducts(selectedCategoryId),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<ProductModel>> snapshot) {
-                        if (snapshot.hasData) {
-                          return snapshot.data!.isNotEmpty
-                              ? GridView(
-                                gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 7,
-                                    crossAxisSpacing: 7,
-                                    childAspectRatio: 0.6),
-                                children: [
-                                  ...List.generate(
-                                      snapshot.data!.length, (index) {
-                                    ProductModel productModel =
-                                    snapshot.data![index];
-                                    return GridviewItem(
-                                      onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductDetailScreen(
-                                                productModel:
-                                                productModel,
-                                                index: index,
-                                              ),
-                                        ),
-                                      );
-                                    },
-                                      index: index,
-                                      isActive: true,
-                                      productModel: productModel,
+                  child: StreamBuilder<List<ProductModel>>(
+                    stream: context
+                        .read<ProductProvider>()
+                        .getProducts(selectedCategoryId),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<ProductModel>> snapshot) {
+                      if (snapshot.hasData) {
+                        return snapshot.data!.isNotEmpty
+                            ? GridView(
+                          padding: EdgeInsets.all(15.sp),
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 15,
+                                  crossAxisSpacing: 15,
+                                  childAspectRatio: 0.6),
+                              children: [
+                                ...List.generate(
+                                    snapshot.data!.length, (index) {
+                                  ProductModel productModel =
+                                  snapshot.data![index];
+                                  return GridviewItem(
+                                    onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProductDetailScreen(
+                                              productModel:
+                                              productModel,
+                                              index: index,
+                                            ),
+                                      ),
                                     );
-                                  })
-                                ],
-                              )
-                              : const Center(
-                            child: Text(
-                              "Product Empty!",
-                              style: TextStyle(
-                                  fontSize: 32,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          );
-                        }
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text(snapshot.error.toString()),
-                          );
-                        }
-                        return const Center(
-                            child: CircularProgressIndicator());
-                      },
-                    ),
+                                  },
+                                    index: index,
+                                    isActive: true,
+                                    productModel: productModel,
+                                  );
+                                })
+                              ],
+                            )
+                            : const Center(
+                          child: Text(
+                            "Product Empty!",
+                            style: TextStyle(
+                                fontSize: 32,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      }
+                      return const Center(
+                          child: CircularProgressIndicator());
+                    },
                   ),
                 )
                     : const Center(child: Text("Product Empty!"));

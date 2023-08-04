@@ -18,6 +18,43 @@ class OrderProvider with ChangeNotifier {
   final OrderService orderService;
   List<OrderModel> userOrders = [];
 
+  // Future<void> addOrder({
+  //   required BuildContext context,
+  //   required OrderModel orderModel,
+  // }) async {
+  //   List<OrderModel> exists = userOrders
+  //       .where((element) => element.productId == orderModel.productId)
+  //       .toList();
+  //
+  //   OrderModel? oldOrderModel;
+  //   if (exists.isNotEmpty) {
+  //     oldOrderModel = exists.first;
+  //     oldOrderModel = oldOrderModel.copWith(
+  //         count: orderModel.count + oldOrderModel.count,
+  //         totalPrice:
+  //         (orderModel.count + oldOrderModel.count) * orderModel.totalPrice);
+  //   }
+  //
+  //   showLoading(context: context);
+  //   UniversalData universalData = exists.isNotEmpty
+  //       ? await orderService.updateOrder(orderModel: oldOrderModel!)
+  //       : await orderService.addOrder(orderModel: orderModel);
+  //
+  //   if (context.mounted) {
+  //     hideLoading(dialogContext: context);
+  //   }
+  //   if (universalData.error.isEmpty) {
+  //     if (context.mounted) {
+  //       showMessage(context, universalData.data as String);
+  //       Navigator.pop(context);
+  //     }
+  //   } else {
+  //     if (context.mounted) {
+  //       showMessage(context, universalData.error);
+  //     }
+  //   }
+  // }
+
   Future<void> addOrder({
     required BuildContext context,
     required OrderModel orderModel,
@@ -54,6 +91,7 @@ class OrderProvider with ChangeNotifier {
       }
     }
   }
+
 
   Future<void> updateOrder({
     required BuildContext context,

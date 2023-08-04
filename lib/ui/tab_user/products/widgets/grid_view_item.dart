@@ -93,16 +93,19 @@ class GridviewItem extends StatelessWidget {
                           .w500),
                 ),
                 SizedBox(height: 4),
-                Text(
-                  productModel
-                      .description,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.C_878788,
-                      fontWeight:
-                      FontWeight.w500),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5.w),
+                  child: Text(
+                    productModel
+                        .description,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: AppColors.C_878788,
+                        fontWeight:
+                        FontWeight.w500),
+                  ),
                 ),
                 SizedBox(height: 4),
                 Text(

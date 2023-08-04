@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/category_model/category_model.dart';
@@ -46,10 +49,18 @@ class _CategoryAdminScreenState extends State<CategoryAdminScreen> {
                     (index) {
                   CategoryModel categoryModel = snapshot.data![index];
                   return ListTile(
-                    leading: Image.network(
-                      categoryModel.imageUrl,
-                      width: 50,
-                      height: 50,
+                    leading: CachedNetworkImage(
+                      height: 50.w,
+                      width: 50.w,
+                      fit: BoxFit.cover,
+                      imageUrl: categoryModel.imageUrl,
+                      placeholder: (context,
+                          url) =>
+                      const CupertinoActivityIndicator(),
+                      errorWidget: (context,
+                          url, error) =>
+                      const Icon(
+                          Icons.error),
                     ),
                     onLongPress: () {
                       context.read<CategoryProvider>().deleteCategory(

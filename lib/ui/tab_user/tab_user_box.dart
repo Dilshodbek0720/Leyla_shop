@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:leyla_shop/utils/colors.dart';
 import 'package:provider/provider.dart';
 import '../../providers/tab_user_provider.dart';
 
@@ -18,6 +19,7 @@ class _TabUserBoxState extends State<TabUserBox> {
   Widget build(BuildContext context) {
     var provider = Provider.of<TabUserProvider>(context, listen: true);
     return Scaffold(
+      backgroundColor: AppColors.white,
       body:provider.widget,
       bottomNavigationBar: CurvedNavigationBar(
         color: Colors.greenAccent,

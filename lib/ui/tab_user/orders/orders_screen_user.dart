@@ -51,7 +51,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     child: ListTile(
                       title: Text(orderModel.productName),
                       subtitle: Text("Count: ${orderModel.count.toString()}"),
-                      trailing: Text(orderModel.orderStatus),
+                      trailing: IconButton(onPressed: (){
+                        Provider.of<OrderProvider>(context, listen: false).deleteOrder(context: context, orderId: orderModel.orderId);
+                      }, icon: Icon(Icons.delete))
                   ));
                 },
               ),

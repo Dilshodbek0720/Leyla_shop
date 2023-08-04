@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -52,7 +54,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         },
                         leading: ClipRRect(
                             borderRadius: BorderRadius.circular(6),
-                            child: Image.network(categoryModel.imageUrl,height: 60, width: 60, fit: BoxFit.cover,)),
+                            child: CachedNetworkImage(
+                              height: 60.w,
+                              width: 60.w,
+                              fit: BoxFit.cover,
+                              imageUrl: categoryModel.imageUrl,
+                              placeholder: (context,
+                                  url) =>
+                              const CupertinoActivityIndicator(),
+                              errorWidget: (context,
+                                  url, error) =>
+                              const Icon(
+                                  Icons.error),
+                            ),),
                         title: Text(categoryModel.categoryName),
                         subtitle: Text(categoryModel.description),
                       ),
