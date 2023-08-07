@@ -163,41 +163,46 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         fontWeight: FontWeight.w500),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        if (count > 1) {
-                          setState(() {
-                            count--;
-                          });
-                        }
-                      },
-                      child: const Icon(
-                        Icons.remove,
-                      ),
-                    ),
-                    Text(
-                      count.toString(),
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    TextButton(
+                Container(
+                  margin: EdgeInsets.only(left: 195.w, right: 40.w, bottom: 10.h, top: 5.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.greenAccent,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
                         onPressed: () {
-                          if ((count + 1) <= widget.productModel.count) {
+                          if (count > 1) {
                             setState(() {
-                              count++;
+                              count--;
                             });
                           }
                         },
-                        child: const Icon(Icons.add)),
-                    SizedBox(width: 37.w,)
-                  ],
+                        child: const Icon(
+                          Icons.remove,
+                        ),
+                      ),
+                      Text(
+                        count.toString(),
+                        style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            if ((count + 1) <= widget.productModel.count) {
+                              setState(() {
+                                count++;
+                              });
+                            }
+                          },
+                          child: const Icon(Icons.add)),
+                    ],
+                  ),
                 ),
-
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 37.w),
                   child: Text(

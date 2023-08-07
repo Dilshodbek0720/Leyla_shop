@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:leyla_shop/ui/tab_user/orders/orders_screen_user.dart';
-
 import '../ui/tab_user/categories/categories_screen.dart';
 import '../ui/tab_user/products/products_screen.dart';
 import '../ui/tab_user/profile/profile_screen.dart';
@@ -29,5 +28,4 @@ class TabUserProvider with ChangeNotifier {
     currentIndex = index;
     notifyListeners();
   }
-
 }

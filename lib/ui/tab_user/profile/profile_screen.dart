@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:leyla_shop/ui/tab_user/profile/widgets/profile_item.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/profile_provider.dart';
@@ -23,7 +24,9 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
     User? user = context.watch<ProfileProvider>().currentUser;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 1,
         centerTitle: true,
         backgroundColor: Colors.greenAccent,
         title: Text("PROfIle", style: TextStyle(
@@ -35,6 +38,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
         actions: [
           IconButton(
               onPressed: () {
+                context.read<AuthProvider>().loginButtonPressed();
                 context.read<AuthProvider>().logOutUser(context);
               },
               icon: const Icon(Icons.logout))
@@ -44,117 +48,68 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
         padding: const EdgeInsets.all(24),
         child: ListView(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "My profile",
-                  style: TextStyle(
-                      fontSize: 26.spMin,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.black),
-                ),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isEdit = !isEdit;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.edit,
-                      size: 32.spMin,
-                      color: Colors.black,
-                    ))
-              ],
-            ),
             SizedBox(
               height: 30.h,
             ),
             Center(
-              child: Icon(
+              child: user==null ? Icon(
                 Icons.person,
-                size: 80.h,
+                size: 160.h,
                 color: Colors.black,
+              ) : Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(80.h),
+                  border: Border.all(width: 1, color: Colors.greenAccent)
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(80.h),
+                    child: Image.network(user.photoURL!, fit: BoxFit.cover,height: 160.h,)),
               ),
             ),
             SizedBox(
               height: 40.h,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Display name : ",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                      fontSize: 20.spMin,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500),
-                ),
-                Center(
-                  child: Text(
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    user?.displayName ?? "",
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
+                  user?.displayName ?? "",
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 40.h,
-            ),
+            SizedBox(height: 8.h,),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Email address  : ",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  user?.email ?? "",
                   style: TextStyle(
-                      fontSize: 20.spMin,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Text(
-                      user?.email ?? "",
-                      style: TextStyle(
-                        fontSize: 14.spMin,
-                        color: Colors.black,
-                      ),
-                    ),
+                      fontSize: 15,
+                      color: Colors.black.withOpacity(0.5),
+                      fontWeight: FontWeight.w500
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 40.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Phone number  : ",
-                  style: TextStyle(
-                      fontSize: 20.spMin,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500),
-                ),
-                Center(
-                  child: Text(
-                    user?.phoneNumber ?? "Empty",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            SizedBox(height: 35.h,),
+            ProfileItem(icon: Icon(Icons.settings, color: Colors.green,size: 32.sp,), text1: "Settings", text2: "Change your setting", onTap: (){}),
+            SizedBox(height: 20.h,),
+            ProfileItem(icon: Icon(Icons.info, color: Colors.green,size: 32.sp,), text1: "FAQ", text2: "Consult the online help", onTap: (){}),
+            SizedBox(height: 20.h,),
+            ProfileItem(icon: Icon(Icons.edit, color: Colors.green,size: 32.sp,), text1: "Edit Profile", text2: "Consult the online help", onTap: () {
+              setState(() {
+                isEdit = !isEdit;
+              });
+            },),
             SizedBox(
               height: 40.h,
             ),
@@ -180,17 +135,6 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                     textAlign: TextAlign.start,
                     controller:
                     context.read<ProfileProvider>().emailController,
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  AddGlobalTextField(
-                    hintText: "Phone Update",
-                    keyboardType: TextInputType.phone,
-                    textInputAction: TextInputAction.next,
-                    textAlign: TextAlign.start,
-                    controller:
-                    context.read<ProfileProvider>().phoneController,
                   ),
                   SizedBox(
                     height: 10.h,

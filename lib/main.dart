@@ -48,7 +48,7 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider(
         create: (context) => OrderProvider(orderService: OrderService()),
-        lazy: false,
+        lazy: true,
       ),
     ],
     child: MyApp(),

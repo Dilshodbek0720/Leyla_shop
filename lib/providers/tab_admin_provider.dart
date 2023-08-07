@@ -26,5 +26,4 @@ class TabAdminProvider with ChangeNotifier {
     currentIndex = index;
     notifyListeners();
   }
-
 }

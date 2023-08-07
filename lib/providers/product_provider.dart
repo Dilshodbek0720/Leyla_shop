@@ -176,11 +176,15 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
-  setInitialValues(CategoryModel categoryModel) {
+  setInitialValues(ProductModel productModel) {
     productNameController =
-        TextEditingController(text: categoryModel.categoryName);
+        TextEditingController(text: productModel.productName);
     productPriceController =
-        TextEditingController(text: categoryModel.description);
+        TextEditingController(text: productModel.price.toString());
+    productDescController =
+        TextEditingController(text: productModel.description);
+    productCountController =
+        TextEditingController(text: productModel.count.toString());
     notifyListeners();
   }
 

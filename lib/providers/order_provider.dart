@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +15,7 @@ class OrderProvider with ChangeNotifier {
 
   final OrderService orderService;
   List<OrderModel> userOrders = [];
+  // int sum = 0;
 
   // Future<void> addOrder({
   //   required BuildContext context,
@@ -164,6 +163,13 @@ class OrderProvider with ChangeNotifier {
       notifyListeners();
     });
   }
+
+  // summa(){
+  //   for(int i=0; i<userOrders.length; i++){
+  //     sum += userOrders[i].totalPrice;
+  //   }
+  //   notifyListeners();
+  // }
 
   showMessage(BuildContext context, String error) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));

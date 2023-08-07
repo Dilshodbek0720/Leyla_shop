@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:provider/provider.dart';
@@ -40,9 +41,18 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.categoryModel == null
-              ? "Category Add"
-              : "Category Update"),
+          elevation: 1,
+          centerTitle: true,
+          backgroundColor: Colors.greenAccent,
+          title: Text(
+            widget.categoryModel == null ? "Category Add" : "Category Update",
+            style: TextStyle(
+              fontFamily: "Cinzel",
+              fontWeight: FontWeight.w700,
+              fontSize: 20.sp,
+              color: AppColors.C_01AA4F,
+            ),
+          ),
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back,
@@ -93,38 +103,41 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                       style: TextButton.styleFrom(
                           backgroundColor: Theme.of(context).indicatorColor),
                       child: context
-                          .watch<CategoryProvider>()
-                          .categoryUrl
-                          .isEmpty
+                              .watch<CategoryProvider>()
+                              .categoryUrl
+                              .isEmpty
                           ? const Text(
-                        "Image Not Selected",
-                        style: TextStyle(color: Colors.black),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      )
+                              "Image Not Selected",
+                              style: TextStyle(color: Colors.black),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )
                           : Image.network(
-                          context.watch<CategoryProvider>().categoryUrl),
+                              context.watch<CategoryProvider>().categoryUrl),
                     ),
                   ),
                   const SizedBox(height: 24),
                 ],
               ),
             ),
-            AddGlobalButton(
-                title: widget.categoryModel == null
-                    ? "Add category"
-                    : "Update Category",
-                onTap: () {
-                  if (widget.categoryModel == null) {
-                    context.read<CategoryProvider>().addCategory(
-                      context: context,
-                    );
-                  } else {
-                    context.read<CategoryProvider>().updateCategory(
-                        context: context,
-                        currentCategory: widget.categoryModel!);
-                  }
-                }),
+            Padding(
+              padding: EdgeInsets.all(16.sp),
+              child: AddGlobalButton(
+                  title: widget.categoryModel == null
+                      ? "Add category"
+                      : "Update Category",
+                  onTap: () {
+                    if (widget.categoryModel == null) {
+                      context.read<CategoryProvider>().addCategory(
+                            context: context,
+                          );
+                    } else {
+                      context.read<CategoryProvider>().updateCategory(
+                          context: context,
+                          currentCategory: widget.categoryModel!);
+                    }
+                  }),
+            ),
           ],
         ),
       ),
@@ -180,9 +193,8 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
 
     if (xFile != null) {
       print("VBNKM<");
-      await Provider.of<CategoryProvider>(context,listen: false)
+      await Provider.of<CategoryProvider>(context, listen: false)
           .uploadCategoryImage(context, xFile);
-
     }
   }
 
@@ -193,7 +205,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
       maxWidth: 512,
     );
     if (xFile != null) {
-      await Provider.of<CategoryProvider>(context,listen: false)
+      await Provider.of<CategoryProvider>(context, listen: false)
           .uploadCategoryImage(context, xFile);
     }
   }

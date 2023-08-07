@@ -6,6 +6,7 @@ import 'package:leyla_shop/ui/tab_user/products/widgets/grid_view_item.dart';
 import 'package:leyla_shop/ui/tab_user/products/widgets/product_deteil_screen.dart';
 import 'package:leyla_shop/ui/tab_user/products/widgets/category_item_view.dart';
 import 'package:leyla_shop/ui/tab_user/products/widgets/product_item_view.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -14,6 +15,7 @@ import '../../../data/models/product_model/product_model.dart';
 import '../../../providers/category_provider.dart';
 import '../../../providers/product_provider.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/icons.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -90,7 +92,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     ],
                   ),
                 )
-                    : const Center(child: Text("Empty!"));
+                    : Center(child: Lottie.asset(AppIcons.emptyLottie));
               }
               if (snapshot.hasError) {
                 return Center(

@@ -38,7 +38,7 @@ class AddGlobalTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColors.white,
+        fillColor: AppColors.black.withOpacity(0.3),
         hintText: hintText,
         hintStyle: TextStyle(
             fontSize: 16,

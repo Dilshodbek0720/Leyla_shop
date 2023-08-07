@@ -5,4 +5,5 @@ class AppIcons{
   static const String googleIcon = "assets/svg/google_icon.svg";
   static const String passiveLike = "assets/svg/passive_icon.svg";
   static const String activeLike = "assets/svg/active_icon.svg";
+  static const String emptyLottie = "assets/lottie/empty_lottie.json";
 }

@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../../data/models/category_model/category_model.dart';
 import '../../../providers/category_provider.dart';
 import '../../../utils/colors.dart';
+import '../../../utils/icons.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
@@ -19,6 +21,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
         centerTitle: true,
         backgroundColor: Colors.greenAccent,
         title: Text("CATEGORIES", style: TextStyle(
@@ -75,7 +78,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
               ]
             )
-                : const Center(child: Text("Empty!",style: TextStyle(fontSize: 50,fontWeight: FontWeight.w700),));
+                : Center(child: Lottie.asset(AppIcons.emptyLottie));
           }
           if (snapshot.hasError) {
             return Center(
