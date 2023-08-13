@@ -16,7 +16,6 @@ import 'data/firebase/orders_firebase.dart';
 import 'data/firebase/product_service.dart';
 import 'data/firebase/profile_service.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
