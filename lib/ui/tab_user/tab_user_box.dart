@@ -5,7 +5,6 @@ import 'package:leyla_shop/utils/colors.dart';
 import 'package:provider/provider.dart';
 import '../../providers/tab_user_provider.dart';
 
-
 class TabUserBox extends StatefulWidget {
   const TabUserBox({super.key});
 
