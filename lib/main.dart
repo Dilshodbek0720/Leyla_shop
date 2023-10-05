@@ -1,4 +1,6 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:leyla_shop/data/firebase/auth_service.dart';
@@ -51,7 +53,7 @@ Future<void> main() async {
         lazy: true,
       ),
     ],
-    child: MyApp(),
+    child: const MyApp()
   ));
 }
 

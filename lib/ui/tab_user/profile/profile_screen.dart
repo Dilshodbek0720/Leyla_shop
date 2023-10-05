@@ -76,8 +76,8 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   user?.displayName ?? "",
-                  style: const TextStyle(
-                    fontSize: 25,
+                  style: TextStyle(
+                    fontSize: 25.sp,
                     color: Colors.black,
                     fontWeight: FontWeight.w600
                   ),
@@ -93,7 +93,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                   overflow: TextOverflow.ellipsis,
                   user?.email ?? "",
                   style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 15.sp,
                       color: Colors.black.withOpacity(0.5),
                       fontWeight: FontWeight.w500
                   ),

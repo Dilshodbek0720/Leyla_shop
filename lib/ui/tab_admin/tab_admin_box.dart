@@ -23,7 +23,7 @@ class _TabAdminBoxState extends State<TabAdminBox> {
       bottomNavigationBar: CurvedNavigationBar(
       color: Colors.greenAccent,
       backgroundColor: Colors.white,
-      items: <Widget>[
+      items: const <Widget>[
         Icon(Icons.home, size: 30, color: Colors.white,),
         Icon(Icons.category, size: 30, color: Colors.white,),
         Icon(Icons.person, size: 30, color: Colors.white,),
@@ -34,21 +34,6 @@ class _TabAdminBoxState extends State<TabAdminBox> {
       buttonBackgroundColor: Colors.greenAccent,
       height: 60.h,
     ),
-
-
-      // BottomNavigationBar(
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.shop_two), label: "Products"),
-      //     BottomNavigationBarItem(
-      //         icon: Icon(Icons.category), label: "Categories"),
-      //     BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-      //   ],
-      //   onTap: (onTab) {
-      //     provider.getScreen(onTab);
-      //   },
-      //   currentIndex: provider.currentIndex,
-      // ),
     );
   }
 }

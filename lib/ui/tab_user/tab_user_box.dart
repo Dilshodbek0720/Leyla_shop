@@ -24,11 +24,11 @@ class _TabUserBoxState extends State<TabUserBox> {
       bottomNavigationBar: CurvedNavigationBar(
         color: Colors.greenAccent,
         backgroundColor: Colors.white,
-        items: <Widget>[
-          const Icon(Icons.home, size: 30, color: Colors.white,),
-          const Icon(Icons.category, size: 30, color: Colors.white,),
-          const Icon(Icons.shopping_cart_rounded, size: 30, color: Colors.white,),
-          const Icon(Icons.person, size: 30, color: Colors.white,),
+        items: const <Widget>[
+          Icon(Icons.home, size: 30, color: Colors.white,),
+          Icon(Icons.category, size: 30, color: Colors.white,),
+          Icon(Icons.shopping_cart_rounded, size: 30, color: Colors.white,),
+          Icon(Icons.person, size: 30, color: Colors.white,),
         ],
         onTap: (index) {
           provider.getScreen(index);
